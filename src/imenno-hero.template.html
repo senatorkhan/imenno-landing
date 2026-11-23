@@ -1,0 +1,1793 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2D211C">
+  <title>Именно — персональный подбор подарков</title>
+  <style>
+    @font-face {
+      font-family: Prata;
+      src: url(data:font/ttf;base64,__PRATA__) format("truetype");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: Golos;
+      src: url(data:font/ttf;base64,__GOLOS__) format("truetype");
+      font-weight: 400 900;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: dark;
+      --ivory: #F3EEE6;
+      --chocolate: #2D211C;
+      --burgundy: #6F2434;
+      --burgundy-hover: #803243;
+      --paper: #FAF7F2;
+      --field: #FDFBF7;
+      --sand: #EDE5DC;
+      --selected: #F1E5E5;
+      --rose: #B9858C;
+      --kraft: #B49C8E;
+      --muted: #65534A;
+      --soft-ivory: #D6C9BC;
+      --rule: #D0C1B5;
+      --control-stroke: #92796E;
+      --inverse-stroke: #AC8F81;
+      --stroke: 1px;
+      --radius: 2px;
+      --control-height: 48px;
+      --touch-height: 44px;
+      --content-max: 1200px;
+      --edge: 64px;
+      --columns: 12;
+      --half-grid: 6;
+      --grid-gap: 32px;
+      --section-space: 88px;
+      --heading-space: 40px;
+      --panel-space: 32px;
+      --header: 88px;
+      --font-display: Prata, Georgia, serif;
+      --font-body: Golos, system-ui, sans-serif;
+      --type-hero: clamp(3.5rem, 5vw, 4.5rem);
+      --type-title: clamp(2.25rem, 3.65vw, 3rem);
+      --type-subtitle: clamp(1.375rem, 2.15vw, 1.75rem);
+      --type-body: 1.125rem;
+      --type-ui: 1rem;
+      --type-caption: .875rem;
+      font-family: var(--font-body);
+      font-size: 16px;
+      background: var(--chocolate);
+      color: var(--ivory);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-size: var(--type-body); line-height: 1.55; }
+    :where(p, h1, h2, h3, li, dd) {
+      hyphens: auto;
+      hyphenate-limit-chars: 8 4 3;
+      overflow-wrap: break-word;
+    }
+    :where(p, li, dd) { text-wrap: pretty; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, a:focus-visible, summary:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 4px;
+    }
+
+    .site-shell {
+      width: min(var(--content-max), calc(100% - var(--edge) - var(--edge)));
+      margin-inline: auto;
+    }
+
+    .site-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+      column-gap: var(--grid-gap);
+    }
+
+    .site-grid > * { min-width: 0; grid-column: span var(--half-grid); }
+
+    .section-band {
+      padding-block: var(--section-space);
+      background: var(--ivory);
+      color: var(--chocolate);
+      color-scheme: light;
+    }
+
+    .section-title {
+      margin: 0;
+      font: 400 var(--type-title)/1.12 var(--font-display);
+      letter-spacing: -.047em;
+      text-wrap: balance;
+    }
+
+    .section-subtitle {
+      margin: 0;
+      font: 400 var(--type-subtitle)/1.26 var(--font-display);
+      letter-spacing: -.026em;
+    }
+
+    .page {
+      position: relative;
+      isolation: isolate;
+      min-height: 100svh;
+      overflow: clip;
+      background: var(--chocolate);
+    }
+
+    .studio-light {
+      --studio-key: #795640;
+      --studio-rim: #563637;
+      --key-x: 73%;
+      --key-y: 54%;
+      --key-width: 46%;
+      --rim-x: 81%;
+      --rim-y: 65%;
+      --rim-width: 53%;
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        radial-gradient(ellipse var(--key-width) 58% at var(--key-x) var(--key-y),
+          color-mix(in srgb, var(--studio-key) 80%, transparent),
+          color-mix(in srgb, var(--studio-key) 71%, transparent) 21%,
+          color-mix(in srgb, var(--studio-key) 46%, transparent) 45%,
+          color-mix(in srgb, var(--studio-key) 21%, transparent) 68%,
+          color-mix(in srgb, var(--studio-key) 5%, transparent) 86%, transparent),
+        radial-gradient(ellipse var(--rim-width) 55% at var(--rim-x) var(--rim-y),
+          color-mix(in srgb, var(--studio-rim) 55%, transparent),
+          color-mix(in srgb, var(--studio-rim) 26%, transparent) 46%,
+          color-mix(in srgb, var(--studio-rim) 4%, transparent) 81%, transparent);
+      transition: opacity .49s ease-in-out;
+    }
+
+    .studio-light.is-visible { opacity: 1; }
+
+    .header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: var(--header);
+    }
+
+    .wordmark {
+      display: block;
+      width: 160px;
+      height: auto;
+    }
+
+    .status {
+      margin: 0;
+      color: var(--soft-ivory);
+      font-size: var(--type-caption);
+      line-height: 1.3;
+      letter-spacing: .065em;
+      text-transform: uppercase;
+      text-align: right;
+    }
+
+    .status::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: var(--inverse-stroke);
+      vertical-align: .13em;
+    }
+
+    .hero {
+      position: relative;
+      grid-template-rows: 1fr auto auto 1fr;
+      min-height: max(632px, calc(100svh - var(--header)));
+      isolation: isolate;
+    }
+
+    .situations .section-title { margin-bottom: var(--heading-space); text-wrap: wrap; }
+
+    .situations h2 span {
+      display: block;
+      margin-top: 8px;
+      color: var(--burgundy);
+    }
+
+    .situation-pair { align-items: start; row-gap: var(--heading-space); }
+
+    .situation-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+      background: var(--sand);
+    }
+
+    .situation h3 { margin-bottom: 16px; }
+
+    .situation p {
+      max-width: 45ch;
+      margin: 16px 0 0;
+      color: var(--muted);
+      text-wrap: pretty;
+    }
+
+    .selection-demo { background: var(--sand); }
+
+    .selection-kicker {
+      margin: 0 0 12px;
+      color: var(--burgundy);
+      font-size: var(--type-caption);
+      font-weight: 600;
+      letter-spacing: .065em;
+      text-transform: uppercase;
+    }
+
+    .selection-demo h2 { margin-bottom: 16px; text-wrap: wrap; }
+
+    .selection-intro {
+      max-width: 54ch;
+      margin: 0 0 var(--heading-space);
+      color: var(--muted);
+    }
+
+    .demo-tabs {
+      display: inline-grid;
+      max-width: 100%;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      padding: 4px;
+      border: var(--stroke) solid var(--control-stroke);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .demo-tab {
+      min-height: var(--control-height);
+      padding: 8px 16px;
+      border: 0;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--chocolate);
+      font-size: var(--type-ui);
+      font-weight: 600;
+    }
+
+    .demo-tab[aria-pressed="true"] { background: var(--burgundy); color: var(--ivory); }
+    .demo-tab[aria-pressed="false"]:hover { background: var(--sand); }
+    .demo-tab:focus-visible { outline-offset: 2px; outline-color: var(--burgundy); }
+
+    .demo-panel {
+      border: var(--stroke) solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .demo-panel [hidden] { display: none; }
+    .quiz-stage { position: relative; overflow-anchor: none; }
+    .quiz-step-stack { display: grid; align-items: start; }
+    .quiz-step-stack > [data-quiz-step] { grid-area: 1 / 1; min-width: 0; }
+    .demo-panel .quiz-step-stack > [data-quiz-step][hidden] { display: block; visibility: hidden; }
+    .quiz-recipient, .quiz-questions, .quiz-result-header, .quiz-empty {
+      padding: var(--panel-space);
+    }
+
+    .quiz-recipient {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      padding-block: 16px;
+      border-bottom: var(--stroke) solid var(--rule);
+    }
+
+    .quiz-recipient-label, .quiz-result-label {
+      margin: 0;
+      color: var(--burgundy);
+      font-size: var(--type-ui);
+      font-weight: 600;
+    }
+
+    .quiz-progress {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 0 0 24px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .quiz-progress li {
+      border-top: var(--stroke) solid var(--rule);
+      padding-top: 8px;
+      color: var(--muted);
+      font-size: var(--type-caption);
+      line-height: 1.4;
+    }
+
+    .quiz-progress li[aria-current="step"], .quiz-progress li[data-state="complete"] {
+      border-color: var(--burgundy);
+    }
+    .quiz-progress li[aria-current="step"] { color: var(--burgundy); font-weight: 600; }
+
+    .quiz-questions h3 {
+      margin: 0 0 12px;
+      font: 600 var(--type-subtitle)/1.26 var(--font-body);
+      letter-spacing: -.025em;
+    }
+
+    .quiz-hint { margin: 0 0 16px; color: var(--muted); }
+    .quiz-questions fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+    .quiz-questions legend { padding: 0; margin-bottom: 8px; color: var(--burgundy); font-size: var(--type-ui); font-weight: 600; }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .quiz-options--stack { grid-template-columns: minmax(0, 1fr); }
+    .quiz-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px var(--grid-gap); }
+
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: var(--control-height);
+      padding: 8px 12px;
+      border: var(--stroke) solid var(--control-stroke);
+      border-radius: var(--radius);
+      background: var(--field);
+      font-size: var(--type-ui);
+      cursor: pointer;
+    }
+
+    .quiz-option:hover { border-color: var(--burgundy); }
+    .quiz-option:has(input:checked) { border-color: var(--burgundy); background: var(--selected); }
+    .quiz-option input { flex: none; width: 17px; height: 17px; margin: 0; accent-color: var(--burgundy); }
+    .quiz-option input:focus-visible { outline-offset: 3px; }
+    .quiz-baseline { min-height: 1.5em; margin: 0 0 8px; color: var(--burgundy); font-size: var(--type-ui); font-weight: 600; line-height: 1.5; }
+    .demo-panel .quiz-baseline[hidden] { display: block; visibility: hidden; }
+
+    .quiz-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    #quiz-next { margin-inline-start: auto; }
+
+    .quiz-result {
+      position: fixed;
+      inset: 0;
+      width: min(940px, calc(100vw - 32px));
+      max-height: calc(100svh - 32px);
+      margin: auto;
+      padding: 0;
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    .quiz-result[open] { display: flex; flex-direction: column; }
+
+    .quiz-result-confetti {
+      --confetti-light: var(--kraft);
+      --confetti-mid: var(--rose);
+      --confetti-deep: var(--burgundy);
+      position: absolute;
+      z-index: 3;
+      inset: 0 0 auto;
+      height: 63%;
+      pointer-events: none;
+    }
+
+    .quiz-result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
+      padding-block: 8px;
+      border-bottom: var(--stroke) solid var(--rule);
+    }
+
+    .quiz-result-header .quiz-result-label { margin: 0; line-height: 1.4; }
+    .icon-button {
+      display: grid;
+      width: var(--touch-height);
+      height: var(--touch-height);
+      place-items: center;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--chocolate);
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .icon-button:hover { color: var(--burgundy); }
+
+    .quiz-result-content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
+    }
+
+    .quiz-result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 16px;
+      flex-shrink: 0;
+      padding: 8px var(--panel-space);
+      border-top: var(--stroke) solid var(--rule);
+    }
+
+    .quiz-match { display: grid; grid-template-columns: minmax(0, 56fr) minmax(0, 44fr); align-items: start; }
+    .quiz-media { position: relative; min-width: 0; aspect-ratio: 5 / 4; background: var(--sand); }
+    .quiz-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .quiz-result-copy { align-self: center; min-width: 0; padding: var(--panel-space); }
+    .quiz-result h3 { margin-bottom: 8px; }
+    .quiz-result .quiz-price { margin: 0; color: var(--burgundy); font-size: var(--type-ui); font-weight: 600; }
+    .quiz-result .quiz-lead { margin: 16px 0 0; }
+
+    .quiz-details { margin-top: 12px; }
+    .quiz-details .disclosure-summary {
+      width: fit-content;
+      min-height: var(--touch-height);
+      color: var(--burgundy);
+    }
+
+    .quiz-factors { display: grid; gap: 8px; margin: 0 0 16px; }
+    .quiz-factors > div {
+      display: grid;
+      grid-template-columns: minmax(83px, .25fr) minmax(0, 1fr);
+      gap: 4px 12px;
+      padding-top: 8px;
+      border-top: var(--stroke) solid var(--rule);
+    }
+    .quiz-factors dt, .quiz-check strong { color: var(--burgundy); font-size: var(--type-caption); font-weight: 600; }
+    .quiz-factors dd, .quiz-result .quiz-check { margin: 0; font-size: var(--type-ui); line-height: 1.5; }
+    .quiz-check strong { display: block; margin-bottom: 2px; }
+    .quiz-empty p { max-width: 46ch; margin: 0; }
+
+    .gift-process {
+      background: var(--chocolate);
+      color: var(--ivory);
+      color-scheme: dark;
+    }
+
+    .process-inner { align-items: start; row-gap: var(--heading-space); }
+
+    .gift-process h2 { margin-bottom: var(--heading-space); }
+
+    .process-steps { margin: 0; padding: 0; list-style: none; }
+    .process-steps li { position: relative; padding-left: 24px; }
+    .process-steps li + li { margin-top: 24px; }
+
+    .process-steps li::before {
+      position: absolute;
+      top: .65rem;
+      left: 0;
+      z-index: 1;
+      width: 9px;
+      height: 9px;
+      border: var(--stroke) solid var(--inverse-stroke);
+      border-radius: 50%;
+      background: var(--chocolate);
+      content: "";
+    }
+
+    .process-steps li:not(:last-child)::after {
+      position: absolute;
+      top: .9rem;
+      bottom: calc(-24px - .9rem);
+      left: 4px;
+      width: var(--stroke);
+      background: var(--inverse-stroke);
+      content: "";
+    }
+
+    .process-steps h3 { margin-bottom: 8px; }
+
+    .process-steps p {
+      max-width: 42ch;
+      margin: 0;
+      color: var(--soft-ivory);
+      text-wrap: pretty;
+    }
+
+    .process-example { margin: 0; }
+    .process-photo { position: relative; }
+    .process-photo img { display: block; width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; background: var(--sand); }
+
+    .process-tag {
+      position: absolute;
+      top: 7%;
+      left: 5%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px 8px 12px;
+      background: var(--ivory);
+      color: var(--burgundy);
+      font: 400 var(--type-ui)/1.3 var(--font-display);
+      box-shadow: 0 4px 12px #2D211C38;
+      transform: rotate(-7deg);
+    }
+
+    .process-tag::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--inverse-stroke);
+      content: "";
+    }
+
+    .process-example figcaption {
+      padding-top: 12px;
+      color: var(--soft-ivory);
+      font-size: var(--type-caption);
+      line-height: 1.4;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      :root { scroll-behavior: smooth; }
+
+      .button:not(:disabled):active,
+      .text-action:not([aria-disabled="true"]):active,
+      .icon-button:active,
+      .demo-tab:active,
+      .disclosure-summary:active,
+      .gift-trigger:not([aria-disabled="true"]):active .gift-cue {
+        translate: 0 1px;
+      }
+
+      .quiz-result[open] { animation: quiz-popup-in .22s cubic-bezier(.22,.72,.27,1) both; }
+
+      @keyframes quiz-popup-in {
+        from { opacity: 0; transform: translateY(8px) scale(.99); }
+        to { opacity: 1; transform: none; }
+      }
+
+      .situation-arrival {
+        transition: opacity .52s ease, transform .62s cubic-bezier(.22,.72,.27,1);
+      }
+
+      .situation-arrival.is-approaching { opacity: .4; transform: translateY(16px); }
+
+      .process-steps li::after {
+        transform-origin: top;
+        transition: transform .54s cubic-bezier(.25,.6,.3,1);
+      }
+
+      .process-steps li:nth-child(2)::after { transition-delay: .22s; }
+      .process-steps.is-approaching li::after { transform: scaleY(0); }
+
+      @supports (animation-timeline: view()) {
+        .art {
+          animation: box-handoff linear both;
+          animation-timeline: view();
+          animation-range: exit 0% exit 90%;
+        }
+
+        @keyframes box-handoff {
+          to { transform: translateY(-18px); }
+        }
+      }
+    }
+
+    .copy, .actions { grid-column: 1 / span var(--half-grid); z-index: 1; }
+    .copy { grid-row: 2; align-self: end; padding-top: 24px; }
+
+    .descriptor {
+      margin: 0 0 24px;
+      color: var(--soft-ivory);
+      font-size: var(--type-caption);
+      font-weight: 600;
+      letter-spacing: .065em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+      color: var(--ivory);
+      font: 400 var(--type-hero)/1.06 var(--font-display);
+      letter-spacing: -.065em;
+    }
+
+    .hero h1 span { display: block; }
+    .hero h1 span + span { margin-top: 8px; }
+
+    .lead {
+      max-width: 41ch;
+      margin: 24px 0 0;
+      color: var(--soft-ivory);
+      text-wrap: pretty;
+    }
+
+    .actions {
+      grid-row: 3;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      margin: 24px 0 0;
+      padding-bottom: 24px;
+    }
+
+    .hero-next {
+      position: absolute;
+      z-index: 3;
+      inset-inline-start: calc(-100% - var(--grid-gap));
+      inset-block-end: var(--hero-cue-bottom);
+      display: inline-flex;
+      min-height: var(--touch-height);
+      align-items: center;
+      gap: 8px;
+      color: var(--soft-ivory);
+      font-size: var(--type-caption);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .hero-next:hover, .hero-next:focus-visible { color: var(--ivory); }
+
+    .hero-next-icon {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border: var(--stroke) solid var(--inverse-stroke);
+      border-radius: 50%;
+      font-size: var(--type-ui);
+      line-height: 1;
+      transition: border-color 160ms ease, transform 160ms ease;
+    }
+
+    .hero-next:hover .hero-next-icon, .hero-next:focus-visible .hero-next-icon { border-color: var(--ivory); }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-next:hover .hero-next-icon, .hero-next:focus-visible .hero-next-icon { transform: translateY(2px); }
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: var(--control-height);
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border: var(--stroke) solid var(--burgundy);
+      border-radius: var(--radius);
+      background: var(--burgundy);
+      color: var(--ivory);
+      font-size: var(--type-ui);
+      font-weight: 600;
+      line-height: 1.35;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .button:hover { background: var(--burgundy-hover); border-color: var(--burgundy-hover); }
+    .button:focus-visible { outline-color: var(--burgundy); }
+    .hero .button { border-color: var(--inverse-stroke); }
+    .hero .button:focus-visible { outline-color: var(--ivory); }
+
+    .button--outline { color: var(--burgundy); background: transparent; }
+    .button--outline:hover { color: var(--burgundy); background: var(--selected); }
+    .button:disabled { border-color: var(--control-stroke); color: var(--muted); background: var(--sand); cursor: default; }
+
+    .text-action {
+      display: inline-flex;
+      min-height: var(--touch-height);
+      align-items: center;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--burgundy);
+      font-size: var(--type-ui);
+      font-weight: 600;
+      line-height: 1.35;
+      text-align: left;
+      text-decoration: underline;
+      text-decoration-thickness: var(--stroke);
+      text-decoration-color: var(--inverse-stroke);
+      text-underline-offset: 4px;
+    }
+
+    .text-action:hover { text-decoration-color: currentColor; }
+    .text-action--inverse { color: var(--ivory); }
+
+    .art {
+      --hero-cue-bottom: 24px;
+      position: relative;
+      z-index: 0;
+      grid-column: calc(var(--half-grid) + 1) / -1;
+      grid-row: 1 / -1;
+      min-width: 0;
+      margin: 0;
+    }
+
+    .visual {
+      position: absolute;
+      inset: 2px -8% 34px -8%;
+      pointer-events: none;
+      isolation: isolate;
+    }
+
+    #gift-scene { position: relative; z-index: 1; display: block; width: 100%; height: 100%; }
+
+    .confetti-layer {
+      --confetti-light: var(--ivory);
+      --confetti-mid: var(--soft-ivory);
+      --confetti-deep: var(--rose);
+      position: absolute;
+      inset: 0;
+    }
+    .confetti-layer--front { z-index: 2; }
+
+    .confetti-piece {
+      position: absolute;
+      border-radius: .6px;
+      background: currentColor;
+      opacity: 0;
+    }
+
+    .confetti-piece--dot { border-radius: 50%; }
+    .confetti-piece--flag { clip-path: polygon(0 0, 100% 0, 100% 100%, 52% 79%, 0 100%); }
+    .confetti-piece--curl {
+      border: var(--paper-thickness) solid currentColor;
+      border-inline-start-color: transparent;
+      border-block-end-color: transparent;
+      border-radius: 50%;
+      background: none;
+    }
+
+    .gift-trigger {
+      position: absolute;
+      z-index: 2;
+      inset: 11% -3% var(--hero-cue-bottom);
+      width: auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--soft-ivory);
+      touch-action: manipulation;
+    }
+
+    .gift-trigger:focus-visible { outline: 0; }
+    .gift-trigger:focus-visible .gift-cue {
+      outline: 2px solid currentColor;
+      outline-offset: 4px;
+    }
+
+    .gift-cue {
+      position: absolute;
+      right: 4%;
+      bottom: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: var(--touch-height);
+      padding: 4px 8px 4px 4px;
+      font-size: var(--type-caption);
+    }
+
+    .gift-trigger[aria-disabled="true"], .text-action[aria-disabled="true"] { cursor: wait; }
+
+    .gift-trigger:hover .gift-cue { color: var(--ivory); }
+
+    .gift-cue-icon {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border: var(--stroke) solid var(--inverse-stroke);
+      border-radius: 50%;
+      font-size: var(--type-ui);
+      line-height: 1;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .gift-trigger:hover .gift-cue-icon {
+      border-color: var(--ivory);
+      background: #F3EEE612;
+    }
+
+    .gift-note {
+      position: absolute;
+      z-index: 3;
+      top: 57%;
+      left: 6%;
+      width: min(286px, 53%);
+      padding: 16px 20px 16px;
+      border-radius: var(--radius);
+      background: var(--ivory);
+      box-shadow: 0 10px 28px #1D120C66;
+      color: var(--chocolate);
+      pointer-events: none;
+      visibility: hidden;
+      opacity: 0;
+      transform: translate(42%, 23px) rotate(4deg) scale(.84);
+      transform-origin: 84% 100%;
+      transition: transform .28s cubic-bezier(.26,.78,.27,1), opacity .18s ease, visibility 0s linear .28s;
+    }
+
+    .art[data-open="true"] .gift-note {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transform: rotate(-2deg);
+      transition-delay: .37s, .37s, .37s;
+    }
+
+    .gift-note-label {
+      margin: 0 0 8px;
+      color: var(--burgundy);
+      font-size: var(--type-caption);
+      font-weight: 600;
+      letter-spacing: .065em;
+      text-transform: uppercase;
+    }
+
+    .gift-note-context { margin: 8px 0 0; font-size: var(--type-ui); line-height: 1.5; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    dialog {
+      width: min(470px, calc(100vw - 36px));
+      max-height: calc(100svh - 36px);
+      padding: var(--panel-space);
+      overflow: auto;
+      border: 0;
+      border-radius: var(--radius);
+      background: var(--paper);
+      color: var(--chocolate);
+      color-scheme: light;
+      box-shadow: 0 18px 80px #140D0AA0;
+    }
+
+    dialog::backdrop { background: #2D211CBF; }
+    dialog p { margin: 0 0 16px; }
+
+    .why-dialog {
+      width: min(496px, calc(100vw - 36px));
+    }
+
+    .why-dialog .why-recipient {
+      margin-bottom: 8px;
+      color: var(--burgundy);
+      font-size: var(--type-caption);
+      font-weight: 600;
+      letter-spacing: .065em;
+      text-transform: uppercase;
+    }
+
+    .why-dialog h2 { margin: 0 32px 8px 0; }
+    .why-dialog .why-gift { margin-bottom: 24px; font-weight: 600; }
+    .why-details { display: grid; gap: 16px; margin: 0 0 24px; }
+    .why-details > div { padding-top: 16px; border-top: var(--stroke) solid var(--rule); }
+    .why-details dt { margin-bottom: 4px; color: var(--burgundy); font-size: var(--type-ui); font-weight: 600; }
+    .why-details dd { margin: 0; }
+
+    .close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+
+    .launch-section:focus { outline: none; }
+
+    .launch-inner { align-items: first baseline; row-gap: var(--heading-space); }
+
+    .launch-section h2 {
+      margin-bottom: var(--heading-space);
+      text-wrap: wrap;
+    }
+
+    .launch-section h2 span { display: block; color: var(--burgundy); }
+
+    .launch-form {
+      padding: var(--panel-space);
+      border: var(--stroke) solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .launch-form label { display: block; margin-bottom: 8px; font-size: var(--type-ui); font-weight: 600; }
+    .launch-fields { display: grid; grid-template-columns: minmax(0, 1fr) minmax(192px, auto); gap: 8px; }
+
+    .launch-form input {
+      min-height: var(--control-height);
+      min-width: 0;
+      width: 100%;
+      padding: 8px 12px;
+      border: var(--stroke) solid var(--control-stroke);
+      border-radius: var(--radius);
+      background: var(--field);
+      color: var(--chocolate);
+      font-size: var(--type-ui);
+    }
+
+    .launch-form input[aria-invalid="true"] { border-color: var(--burgundy); }
+    .launch-note, .launch-status { margin: 12px 0 0; font-size: var(--type-caption); line-height: 1.5; }
+    .launch-note { color: var(--muted); }
+    .launch-status { color: var(--burgundy); font-weight: 600; }
+    .launch-status:empty { margin-top: 0; }
+
+    .launch-faq h3 { margin-bottom: 16px; }
+
+    .launch-faq details { border-top: var(--stroke) solid var(--rule); }
+    .launch-faq details:last-child { border-bottom: var(--stroke) solid var(--rule); }
+
+    .disclosure-summary {
+      display: flex;
+      min-height: var(--control-height);
+      align-items: center;
+      gap: 12px;
+      padding-block: 8px;
+      font-size: var(--type-ui);
+      font-weight: 600;
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .launch-faq .disclosure-summary { justify-content: space-between; }
+    .disclosure-summary:hover { color: var(--burgundy); }
+    .disclosure-summary::-webkit-details-marker { display: none; }
+
+    .disclosure-content { display: flow-root; }
+    [data-disclosure-motion] > .disclosure-content { overflow: clip; }
+
+    .disclosure-icon {
+      position: relative;
+      flex: 0 0 13px;
+      height: 13px;
+      color: var(--burgundy);
+    }
+
+    .disclosure-icon::before, .disclosure-icon::after {
+      position: absolute;
+      inset: 6px 0 auto;
+      height: var(--stroke);
+      background: currentColor;
+      content: "";
+    }
+
+    .disclosure-icon::after { transform: rotate(90deg); transition: transform 180ms ease; }
+    .disclosure[open]:not([data-disclosure-motion="closing"]) .disclosure-icon::after { transform: none; }
+    .launch-faq p { margin: 0 24px 16px 0; color: var(--muted); }
+    .launch-faq a { color: var(--burgundy); text-decoration-color: var(--inverse-stroke); text-underline-offset: 3px; }
+    .launch-faq a:hover { text-decoration-color: currentColor; }
+
+    .button, .text-action, .icon-button, .demo-tab, .quiz-option, .disclosure-summary, .gift-cue, .launch-faq a {
+      transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease,
+        text-decoration-color 160ms ease, translate 120ms ease;
+    }
+
+    .landing-footer { padding-block: 16px; background: var(--chocolate); }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .footer-inner img { display: block; width: 128px; }
+
+    @media (max-width: 940px) {
+      .launch-fields { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    @media (max-width: 1039px) {
+      :root {
+        --edge: 32px;
+        --columns: 8;
+        --half-grid: 4;
+        --grid-gap: 24px;
+        --section-space: 72px;
+        --heading-space: 32px;
+        --panel-space: 24px;
+        --header: 72px;
+        --type-hero: clamp(2.5rem, 5.7vw, 3.5rem);
+        --type-body: 1.0625rem;
+      }
+
+      .hero { min-height: max(584px, calc(100svh - var(--header))); }
+    }
+
+    @media (max-width: 760px) {
+      :root {
+        --edge: 24px;
+        --columns: 4;
+        --half-grid: 4;
+        --grid-gap: 16px;
+        --section-space: 56px;
+        --panel-space: 16px;
+        --header: 64px;
+        --type-hero: clamp(2.25rem, 9.5vw, 3rem);
+        --type-title: clamp(1.75rem, 5.2vw, 2.125rem);
+      }
+
+      .studio-light {
+        --key-x: 52%;
+        --key-y: 57%;
+        --key-width: 91%;
+        --rim-x: 62%;
+        --rim-y: 68%;
+        --rim-width: 100%;
+      }
+      .wordmark { width: 128px; }
+      .hero {
+        grid-template-rows: repeat(3, auto);
+        align-content: start;
+        min-height: 0;
+        padding-bottom: 32px;
+      }
+      .copy { grid-row: 1; padding-top: 24px; }
+      .descriptor { margin-bottom: 16px; }
+      .lead { margin-top: 16px; }
+      .art {
+        --hero-cue-bottom: -32px;
+        grid-column: 1 / -1;
+        grid-row: 2;
+        --gift-stage: clamp(270px, min(75vw, 43svh), 420px);
+        min-height: var(--gift-stage);
+        transition: min-height .34s cubic-bezier(.25,.75,.3,1);
+      }
+      .art[data-open="true"] { min-height: calc(var(--gift-stage) + 68px); }
+      .visual { inset: -10px calc(-1 * var(--edge)) auto; height: calc(var(--gift-stage) - 7px); }
+      .gift-trigger { inset: 4% -2% var(--hero-cue-bottom); }
+      .gift-cue { right: 0; padding-right: 2px; }
+      .gift-note {
+        top: calc(var(--gift-stage) / 2 + 10px);
+        left: 50%;
+        translate: -50% 0;
+        width: min(258px, 92%);
+        padding: 12px 16px;
+        transform: translateY(14px) scale(.86);
+        transform-origin: 50% 100%;
+      }
+      .actions { margin-top: 40px; padding-bottom: 0; }
+      .hero-next { inset-inline-start: 0; }
+      .launch-inner { align-items: start; }
+    }
+
+    @media (max-width: 660px) {
+      .quiz-match { grid-template-columns: minmax(0, 1fr); }
+      .quiz-media { aspect-ratio: 4 / 3; }
+    }
+
+    @media (max-width: 580px) {
+      .demo-tabs { width: 100%; }
+      .demo-tab { padding-inline: 8px; }
+      .quiz-recipient { display: grid; grid-template-columns: minmax(0, 1fr); }
+      .quiz-options, .quiz-fields { grid-template-columns: minmax(0, 1fr); }
+      .quiz-progress { gap: 8px; }
+      .quiz-factors > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+      .quiz-result-actions .button { padding-inline: 12px; }
+    }
+
+    @media (max-width: 419px) {
+      .status { max-width: 14ch; }
+      .status::before { display: none; }
+      .hero-next-label { display: none; }
+    }
+
+    @media (max-width: 355px) {
+      .actions { margin-top: 48px; }
+      .art { --hero-cue-bottom: -44px; }
+      .art[data-open="true"] { min-height: calc(var(--gift-stage) + 80px); }
+      .gift-note { width: min(246px, 92%); }
+    }
+
+    @media (max-width: 419px) and (max-height: 760px) {
+      .copy { padding-top: 16px; }
+      .descriptor { margin-bottom: 12px; }
+      .lead { margin-top: 12px; }
+      .art { --gift-stage: clamp(208px, 64vw, 260px); --hero-cue-bottom: -24px; }
+      .actions { margin-top: 28px; }
+    }
+
+    @media (max-width: 355px) and (max-height: 760px) {
+      .hero { --type-hero: 2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="landing">
+    <div class="page">
+      <div class="studio-light is-visible" aria-hidden="true"></div>
+      <div class="studio-light" aria-hidden="true"></div>
+      <header class="header site-shell" id="top">
+        <img class="wordmark" src="data:image/svg+xml;base64,__LOGO__" alt="Именно">
+        <p class="status">Сервис в разработке</p>
+      </header>
+      <section class="hero site-shell site-grid" aria-labelledby="hero-title">
+        <div class="copy">
+          <p class="descriptor">Персональный подбор подарков</p>
+          <h1 id="hero-title"><span>Не больше подарков.</span><span>Более подходящие.</span></h1>
+          <p class="lead">Несколько идей под интересы, повод и бюджет. Объясним, почему каждая может подойти.</p>
+        </div>
+        <figure class="art" data-open="false" aria-label="Подарочная коробка с биркой «Для Маши»">
+          <div class="visual" aria-hidden="true">
+            <div class="confetti-layer" id="confetti-back"></div>
+            <canvas id="gift-scene"></canvas>
+            <div class="confetti-layer confetti-layer--front" id="confetti-front"></div>
+          </div>
+          <button class="gift-trigger" type="button" id="gift-trigger" aria-expanded="false" aria-controls="gift-note">
+            <span class="gift-cue">
+              <span class="gift-cue-icon" aria-hidden="true">+</span>
+              <span class="gift-cue-text">Открыть подарок</span>
+            </span>
+          </button>
+          <a class="hero-next" href="#situations" aria-label="Дальше о подборе">
+            <span>Дальше<span class="hero-next-label"> о подборе</span></span>
+            <span class="hero-next-icon" aria-hidden="true">↓</span>
+          </a>
+          <article class="gift-note" id="gift-note" aria-hidden="true" aria-labelledby="gift-note-title" inert>
+            <p class="gift-note-label">Для Маши</p>
+            <h2 class="section-subtitle" id="gift-note-title">Чехол для книги</h2>
+            <p class="gift-note-context">Читает в дороге. Книги уже дарили.</p>
+            <button class="text-action" type="button" id="gift-note-why" aria-haspopup="dialog" aria-controls="gift-why">Почему этот подарок?</button>
+          </article>
+          <p class="sr-only" id="gift-announcement" role="status"></p>
+        </figure>
+        <div class="actions">
+          <a class="button" href="#launch" id="launch-button">Сообщить о запуске</a>
+          <button class="text-action text-action--inverse" type="button" id="example-button" aria-controls="gift-note" aria-expanded="false">Посмотреть пример</button>
+        </div>
+      </section>
+    </div>
+    <section class="section-band situations" id="situations" aria-labelledby="situations-title">
+      <div class="site-shell">
+        <h2 class="section-title situation-arrival" id="situations-title">В избранном уже двенадцать вещей. <span>Подарка пока нет.</span></h2>
+        <div class="situation-pair site-grid">
+          <article class="situation situation-arrival">
+            <h3 class="section-subtitle">Уже многое дарили</h3>
+            <img class="situation-image" src="data:image/jpeg;base64,__GIFTED_IMAGE__" width="1200" height="800" loading="lazy" decoding="async" alt="Стопка книг, чай и плед на деревянном столе">
+            <p>«Маме уже дарила книги, чай и плед. Хочется придумать что-то новое».</p>
+          </article>
+          <article class="situation situation-arrival">
+            <h3 class="section-subtitle">Плохо знаете вкусы</h3>
+            <img class="situation-image" src="data:image/jpeg;base64,__UNKNOWN_IMAGE__" width="1200" height="800" loading="lazy" decoding="async" alt="Чашка кофе рядом с блокнотом и ручкой">
+            <p>«У коллеги день рождения. Хочется выбрать что-то уместное, а я знаю только, что она любит кофе».</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section-band selection-demo" id="demo" aria-labelledby="demo-title">
+      <div class="site-shell">
+        <p class="selection-kicker">Демо подбора</p>
+        <h2 class="section-title" id="demo-title">Попробуйте подобрать подарок</h2>
+        <p class="selection-intro">Пройдите три шага. Покажем подарок и объясним, как ответы повлияли на выбор.</p>
+
+        <div class="demo-panel">
+          <div class="quiz-recipient">
+            <p class="quiz-recipient-label" id="quiz-recipient-label">Кому выбираем подарок?</p>
+            <div class="demo-tabs" role="group" aria-labelledby="quiz-recipient-label">
+              <button class="demo-tab" type="button" data-quiz-scenario="close" aria-pressed="true">Близкому человеку</button>
+              <button class="demo-tab" type="button" data-quiz-scenario="colleague" aria-pressed="false">Коллеге</button>
+            </div>
+          </div>
+
+          <div class="quiz-stage">
+            <div class="quiz-questions" id="quiz-questions">
+              <ol class="quiz-progress" id="quiz-progress" aria-label="Этапы подбора">
+                <li data-progress-step="0" aria-current="step">Привычка</li>
+                <li data-progress-step="1">Повод и бюджет</li>
+                <li data-progress-step="2">Прошлые подарки</li>
+              </ol>
+
+              <div class="quiz-step-stack">
+                <div data-quiz-step="0">
+                  <h3 tabindex="-1" data-quiz-heading id="quiz-clue-title">Что знаете о получателе?</h3>
+                  <p class="quiz-hint">Выберите одну деталь, которую точно знаете.</p>
+                  <fieldset aria-labelledby="quiz-clue-title">
+                    <div class="quiz-options" id="quiz-clues"></div>
+                  </fieldset>
+                </div>
+
+                <div data-quiz-step="1" hidden>
+                  <h3 tabindex="-1" data-quiz-heading>Какой повод и бюджет?</h3>
+                  <p class="quiz-hint">Укажите повод и сумму, в которую хотите уложиться.</p>
+                  <div class="quiz-fields">
+                    <fieldset>
+                      <legend>Повод</legend>
+                      <div class="quiz-options quiz-options--stack">
+                        <label class="quiz-option"><input type="radio" name="quiz-occasion" value="birthday"><span>День рождения</span></label>
+                        <label class="quiz-option"><input type="radio" name="quiz-occasion" value="attention"><span>Знак внимания</span></label>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Бюджет</legend>
+                      <div class="quiz-options quiz-options--stack">
+                        <label class="quiz-option"><input type="radio" name="quiz-budget" value="1500"><span>До 1 500 ₽</span></label>
+                        <label class="quiz-option"><input type="radio" name="quiz-budget" value="3000"><span>До 3 000 ₽</span></label>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+
+                <div data-quiz-step="2" hidden>
+                  <h3 tabindex="-1" data-quiz-heading id="quiz-history-title">Что уже дарили?</h3>
+                  <p class="quiz-baseline" id="quiz-baseline" hidden></p>
+                  <p class="quiz-hint">Отметьте то, что человеку уже дарили. Этот шаг можно пропустить.</p>
+                  <fieldset aria-labelledby="quiz-history-title">
+                    <div class="quiz-options" id="quiz-history"></div>
+                  </fieldset>
+                </div>
+
+              </div>
+              <div class="quiz-actions">
+                <button class="text-action" id="quiz-back" type="button" hidden>Назад</button>
+                <button class="button" id="quiz-next" type="button" disabled>Далее</button>
+              </div>
+            </div>
+          </div>
+
+          <dialog class="quiz-result" id="quiz-result" aria-labelledby="quiz-dialog-title">
+            <div class="quiz-result-confetti" id="quiz-result-confetti" aria-hidden="true"></div>
+            <div class="quiz-result-header">
+              <p class="quiz-result-label" id="quiz-dialog-title">Результат подбора</p>
+              <form method="dialog"><button class="icon-button" aria-label="Закрыть результат">×</button></form>
+            </div>
+            <div class="quiz-result-content" id="quiz-result-content" tabindex="0" role="region" aria-label="Объяснение результата">
+              <div class="quiz-match" id="quiz-match" hidden>
+                <div class="quiz-media">
+                  <img id="quiz-photo" width="506" height="506" decoding="async" alt="">
+                </div>
+                <div class="quiz-result-copy">
+                  <h3 class="section-subtitle" tabindex="-1" id="quiz-result-title"></h3>
+                  <p class="quiz-price">≈ <span id="quiz-result-price"></span></p>
+                  <p class="quiz-lead" id="quiz-fit"></p>
+                  <details class="disclosure quiz-details" id="quiz-result-details">
+                    <summary class="disclosure-summary">Что учли<span class="disclosure-icon" aria-hidden="true"></span></summary>
+                    <div class="disclosure-content">
+                      <dl class="quiz-factors">
+                        <div><dt>Повод</dt><dd id="quiz-occasion-reason"></dd></div>
+                        <div><dt>Бюджет</dt><dd id="quiz-budget-reason"></dd></div>
+                        <div id="quiz-excluded-row" hidden><dt>Прошлые подарки</dt><dd id="quiz-excluded"></dd></div>
+                      </dl>
+                      <p class="quiz-check"><strong>Что проверить перед покупкой</strong><span id="quiz-check"></span></p>
+                    </div>
+                  </details>
+                </div>
+              </div>
+              <div class="quiz-empty" id="quiz-empty" hidden>
+                <h3 class="section-subtitle" tabindex="-1" id="quiz-empty-title">Подходящих вариантов не осталось</h3>
+                <p>Измените бюджет или отметки о прошлых подарках, чтобы расширить подбор в демо.</p>
+              </div>
+            </div>
+            <div class="quiz-result-actions">
+              <button class="text-action" id="quiz-edit" type="button">Изменить ответы</button>
+              <button class="button button--outline" id="quiz-replace" type="button" hidden>Такое уже дарили</button>
+            </div>
+          </dialog>
+          <p class="sr-only" id="quiz-status" role="status"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-band gift-process" id="process" aria-labelledby="process-title">
+      <div class="process-inner site-shell site-grid">
+        <div>
+          <h2 class="section-title" id="process-title">Как устроен подбор</h2>
+          <ol class="process-steps" role="list">
+            <li>
+              <h3 class="section-subtitle">Расскажите о человеке</h3>
+              <p>Маша читает по вечерам, книги ей уже дарили. Бюджет — до 3&nbsp;000&nbsp;₽.</p>
+            </li>
+            <li>
+              <h3 class="section-subtitle">Получите несколько идей</h3>
+              <p>«Именно» предложит 3–5 вариантов и объяснит каждый. Например, лампа-прищепка осветит страницы, когда в комнате темно.</p>
+            </li>
+            <li>
+              <h3 class="section-subtitle">Выберите подарок</h3>
+              <p>Сравните идеи, проверьте, подойдёт ли зажим к её книгам, и перейдите в магазин.</p>
+            </li>
+          </ol>
+        </div>
+        <figure class="process-example">
+          <div class="process-photo">
+            <img src="data:image/jpeg;base64,__DEMO_LIGHT__" width="506" height="506" loading="lazy" decoding="async" alt="Бордовая лампа на гибкой ножке с зажимом">
+            <span class="process-tag">Для Маши</span>
+          </div>
+          <figcaption>Лампа-прищепка для чтения</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section-band launch-section" id="launch" aria-labelledby="launch-title" tabindex="-1">
+      <div class="launch-inner site-shell site-grid">
+        <div>
+          <h2 class="section-title" id="launch-title">Узнайте о запуске <span>«Именно»</span></h2>
+          <form class="launch-form" id="launch-form" method="post">
+            <label for="launch-email">Электронная почта</label>
+            <div class="launch-fields">
+              <input id="launch-email" name="email" type="email" placeholder="name@example.com" aria-describedby="launch-note" autocomplete="email" maxlength="254" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required>
+              <button class="button" type="submit" disabled>Сохранить в демо</button>
+            </div>
+            <p class="launch-note" id="launch-note">В демо пробная заявка сохраняется только в этом браузере.</p>
+            <p class="launch-status" id="launch-status" role="status"></p>
+          </form>
+        </div>
+        <div class="launch-faq">
+          <h3 class="section-subtitle">Частые вопросы</h3>
+          <details class="disclosure">
+            <summary class="disclosure-summary">Уже можно подобрать подарок?<span class="disclosure-icon" aria-hidden="true"></span></summary>
+            <div class="disclosure-content">
+              <p>Сейчас можно <a href="#demo">попробовать демо</a> с двумя сценариями. Персональный подбор ещё в разработке.</p>
+            </div>
+          </details>
+          <details class="disclosure">
+            <summary class="disclosure-summary">Что придёт на почту?<span class="disclosure-icon" aria-hidden="true"></span></summary>
+            <div class="disclosure-content">
+              <p>Когда подбор откроется, мы пришлём письмо о запуске.</p>
+            </div>
+          </details>
+          <details class="disclosure">
+            <summary class="disclosure-summary">Уведомление платное?<span class="disclosure-icon" aria-hidden="true"></span></summary>
+            <div class="disclosure-content">
+              <p>Уведомление о запуске бесплатное.</p>
+            </div>
+          </details>
+          <details class="disclosure">
+            <summary class="disclosure-summary">Где купить подарок?<span class="disclosure-icon" aria-hidden="true"></span></summary>
+            <div class="disclosure-content">
+              <p>В полной версии из рекомендации можно будет перейти в магазин.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="landing-footer">
+    <div class="footer-inner site-shell">
+      <img src="data:image/svg+xml;base64,__LOGO__" alt="Именно">
+      <a class="text-action text-action--inverse" href="#top">Наверх ↑</a>
+    </div>
+  </footer>
+
+  <dialog class="why-dialog" id="gift-why" aria-labelledby="why-title">
+    <form method="dialog"><button class="icon-button close" aria-label="Закрыть">×</button></form>
+    <p class="why-recipient" id="why-recipient"></p>
+    <h2 class="section-subtitle" id="why-title" tabindex="-1" autofocus>Почему этот подарок?</h2>
+    <p class="why-gift" id="why-gift"></p>
+    <dl class="why-details">
+      <div>
+        <dt>Что учли</dt>
+        <dd id="why-context"></dd>
+      </div>
+      <div>
+        <dt>Почему подходит</dt>
+        <dd id="why-reason"></dd>
+      </div>
+    </dl>
+    <a class="button" href="#launch" id="why-launch-button">Сообщить о запуске</a>
+  </dialog>
+
+  <script type="application/json" id="quiz-image-data">
+    {
+      "sleeve":"data:image/jpeg;base64,__DEMO_SLEEVE__",
+      "light":"data:image/jpeg;base64,__DEMO_LIGHT__",
+      "stand":"data:image/jpeg;base64,__DEMO_STAND__",
+      "drip":"data:image/jpeg;base64,__DEMO_DRIP__",
+      "voucher":"data:image/jpeg;base64,__DEMO_VOUCHER__",
+      "chocolate":"data:image/jpeg;base64,__DEMO_CHOCOLATE__"
+    }
+  </script>
+  <script>
+__QUIZ_DATA__
+  </script>
+  <script>
+__QUIZ_CONTROLLER__
+  </script>
+  <script>
+__MODELS__
+  </script>
+  <script>
+__SCENE__
+  </script>
+  <script>
+    const sceneCanvas = document.querySelector("#gift-scene");
+    const giftStage = document.querySelector(".art");
+    const confettiBack = document.querySelector("#confetti-back");
+    const confettiFront = document.querySelector("#confetti-front");
+    const quizResult = document.querySelector("#quiz-result");
+    const quizConfetti = document.querySelector("#quiz-result-confetti");
+    const giftTrigger = document.querySelector("#gift-trigger");
+    const giftNote = document.querySelector("#gift-note");
+    const giftCueText = document.querySelector(".gift-cue-text");
+    const giftCueIcon = document.querySelector(".gift-cue-icon");
+    const giftAnnouncement = document.querySelector("#gift-announcement");
+    const giftName = giftNote.querySelector(".gift-note-label");
+    const giftTitle = giftNote.querySelector("h2");
+    const giftContext = giftNote.querySelector(".gift-note-context");
+    const whyTrigger = document.querySelector("#gift-note-why");
+    const whyDialog = document.querySelector("#gift-why");
+    const whyRecipient = document.querySelector("#why-recipient");
+    const whyGift = document.querySelector("#why-gift");
+    const whyContext = document.querySelector("#why-context");
+    const whyReason = document.querySelector("#why-reason");
+    const whyLaunchButton = document.querySelector("#why-launch-button");
+    const exampleButton = document.querySelector("#example-button");
+    const studioLights = [...document.querySelectorAll(".studio-light")];
+    let activeStudio = 0;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const palette = getComputedStyle(document.documentElement);
+    const ivory = palette.getPropertyValue("--ivory").trim();
+    const burgundy = palette.getPropertyValue("--burgundy").trim();
+    const chocolate = palette.getPropertyValue("--chocolate").trim();
+    const sand = palette.getPropertyValue("--sand").trim();
+    const rose = palette.getPropertyValue("--rose").trim();
+    const kraft = palette.getPropertyValue("--kraft").trim();
+    const gifts = [
+      {
+        name: "Для Маши", model: "book-case", paper: ivory, ribbon: burgundy, tag: ivory,
+        studio: { key: "#795640", rim: "#563637" },
+        title: "Чехол для книги",
+        cue: "Читает в дороге. Книги уже дарили.",
+        context: "Маша читает бумажные книги в дороге. Книги ей уже дарили.",
+        reason: "Чехол защитит обложку в сумке и пригодится для книг, которые у Маши уже есть.",
+      },
+      {
+        name: "Для Пети", model: "coffee", paper: sand, ribbon: chocolate, tag: ivory,
+        studio: { key: "#73584A", rim: "#503733" },
+        title: "Френч-пресс",
+        cue: "Пробует разные кофейные зёрна.",
+        context: "Петя любит пробовать кофе из разных зёрен.",
+        reason: "Во френч-прессе можно заваривать новые сорта дома без кофемашины.",
+      },
+      {
+        name: "Для Аллы", model: "sketchbook", paper: rose, ribbon: ivory, tag: ivory,
+        studio: { key: "#79545A", rim: "#57333D" },
+        title: "Скетчбук с карандашом",
+        cue: "Рисует в поездках.",
+        context: "Алла делает наброски в поездках.",
+        reason: "Твёрдая обложка даёт опору для листа, когда рисуешь на коленях. Карандаш уже под рукой.",
+      },
+      {
+        name: "Для Димы", model: "passport", paper: burgundy, ribbon: ivory, tag: ivory,
+        studio: { key: "#704650", rim: "#512D37" },
+        title: "Обложка для паспорта",
+        cue: "Летает налегке.",
+        context: "Дима часто летает налегке. Паспорт носит в сумке рядом с ключами.",
+        reason: "Обложка защитит паспорт от царапин, пока он лежит в сумке по дороге.",
+      },
+      {
+        name: "Для Лены", model: "herb-kit", paper: ivory, ribbon: chocolate, tag: ivory,
+        studio: { key: "#775C4D", rim: "#4F3932" },
+        title: "Набор для зелени",
+        cue: "Любит готовить.",
+        context: "Лена любит готовить.",
+        reason: "Зелень из набора можно вырастить на подоконнике и срезать прямо к блюду.",
+      },
+      {
+        name: "Для Иры", model: "bike-kit", paper: kraft, ribbon: burgundy, tag: ivory,
+        studio: { key: "#6D4F49", rim: "#563542" },
+        title: "Велоремнабор",
+        cue: "Ездит по городу на велосипеде.",
+        context: "Ира ездит по городу на велосипеде.",
+        reason: "Компактный ремнабор можно брать с собой, чтобы заклеить прокол в дороге.",
+      },
+    ];
+    let giftIndex = 0;
+    let giftOpen = false;
+    let giftBusy = false;
+    let confettiTimer = 0;
+
+    const scene = mountImennoScene(sceneCanvas, {
+      gift: gifts[giftIndex],
+      ink: chocolate,
+      tagFont: "Prata, Georgia, serif",
+    });
+
+    function clearConfetti() {
+      window.clearTimeout(confettiTimer);
+      confettiBack.replaceChildren();
+      confettiFront.replaceChildren();
+    }
+
+    function scatterPaper(surface, backLayer, frontLayer = backLayer) {
+      if (motion.matches) return;
+      const bounds = surface.getBoundingClientRect();
+      const span = Math.min(bounds.width, bounds.height);
+      const paperColors = ["var(--confetti-light)", "var(--confetti-mid)", "var(--confetti-deep)"];
+      const cuts = [
+        { name: "dot", width: .85, height: .85 },
+        { name: "flag", width: .96, height: 1.32 },
+        { name: "curl", width: 1.91, height: 1.68 },
+        { name: "tile", width: 1.14, height: .78 },
+        { name: "flag", width: .79, height: 1.49 },
+      ];
+
+      for (let index = 0; index < 27; index++) {
+        const spread = (index * .61803398875) % 1;
+        const row = ((index * 11 + 5) % 29) / 28;
+        const wind = ((index * 7 + 3) % 31) / 30 - .5;
+        const loft = ((index * 19 + 8) % 37) / 36;
+        const hangTime = ((index * 17 + 4) % 31) / 30;
+        const drift = span * (wind * .29 + (spread - .5) * .18);
+        const hop = -span * (.035 + loft * .14);
+        const fall = span * (.27 + spread * .19);
+        const initialTurn = spread * 230 - 115;
+        const tumble = wind * 420;
+        const size = Math.min(14, Math.max(5, span * (.018 + row * .013)));
+        const cut = cuts[index % cuts.length];
+        const piece = document.createElement("span");
+        piece.className = `confetti-piece confetti-piece--${cut.name}`;
+        piece.style.left = `${26 + spread * 54}%`;
+        piece.style.top = `${34 + row * 23}%`;
+        piece.style.width = `${size * cut.width}px`;
+        piece.style.height = `${size * cut.height}px`;
+        piece.style.color = paperColors[index % paperColors.length];
+        piece.style.setProperty("--paper-thickness", `${Math.max(1.5, size * .26)}px`);
+        (index % 3 === 0 ? frontLayer : backLayer).append(piece);
+
+        const pose = (x, y, rotation, flip) =>
+          `translate3d(${x}px, ${y}px, 0) rotate(${initialTurn + tumble * rotation}deg) rotateY(${flip}deg)`;
+        const animation = piece.animate([
+          { transform: pose(0, 0, 0, -25), opacity: 0, offset: 0, easing: "ease-out" },
+          { transform: pose(drift * .15, hop * .61, .12, 20), opacity: 1, offset: .13, easing: "ease-out" },
+          { transform: pose(drift * .39, hop, .36, 148), opacity: 1, offset: .35, easing: "ease-in" },
+          { transform: pose(drift * .76, fall * .37, .68, 242), opacity: .92, offset: .73 },
+          { transform: pose(drift, fall, 1, 395), opacity: 0, offset: 1 },
+        ], { duration: 810 + hangTime * 330, delay: spread * 75 });
+        animation.finished.then(() => piece.remove(), () => piece.remove());
+      }
+    }
+
+    function burstConfetti() {
+      scatterPaper(sceneCanvas, confettiBack, confettiFront);
+    }
+
+    function showStudio(studio) {
+      const nextStudio = 1 - activeStudio;
+      const nextLight = studioLights[nextStudio];
+      nextLight.style.setProperty("--studio-key", studio.key);
+      nextLight.style.setProperty("--studio-rim", studio.rim);
+      nextLight.classList.add("is-visible");
+      studioLights[activeStudio].classList.remove("is-visible");
+      activeStudio = nextStudio;
+    }
+
+    function showGiftDetails(index) {
+      const gift = gifts[index];
+      giftName.textContent = gift.name;
+      giftTitle.textContent = gift.title;
+      giftContext.textContent = gift.cue;
+      whyRecipient.textContent = gift.name;
+      whyGift.textContent = gift.title;
+      whyContext.textContent = gift.context;
+      whyReason.textContent = gift.reason;
+      giftStage.setAttribute("aria-label", `Подарочная коробка с биркой «${gift.name}»`);
+      if (index !== giftIndex) giftAnnouncement.textContent = `Новый подарок. ${gift.name}.`;
+      giftIndex = index;
+    }
+
+    function showGiftNote(open) {
+      giftOpen = open;
+      giftStage.dataset.open = String(open);
+      giftTrigger.setAttribute("aria-expanded", String(open));
+      exampleButton.setAttribute("aria-expanded", String(open));
+      giftNote.setAttribute("aria-hidden", String(!open));
+      giftNote.inert = !open;
+      giftCueText.textContent = open ? "Следующий подарок" : "Открыть подарок";
+      giftCueIcon.textContent = open ? "→" : "+";
+      exampleButton.textContent = open ? "Следующий пример" : "Посмотреть пример";
+    }
+
+    function setGiftBusy(busy) {
+      giftBusy = busy;
+      giftStage.setAttribute("aria-busy", String(busy));
+      giftTrigger.setAttribute("aria-disabled", String(busy));
+      exampleButton.setAttribute("aria-disabled", String(busy));
+    }
+
+    async function activateGift(event) {
+      if (giftBusy) return;
+      const fromExample = event.currentTarget === exampleButton;
+      setGiftBusy(true);
+      try {
+        if (giftOpen) {
+          clearConfetti();
+          const nextIndex = (giftIndex + 1) % gifts.length;
+          showGiftNote(false);
+          await scene?.setOpen(false);
+          showStudio(gifts[nextIndex].studio);
+          await scene?.setGift(gifts[nextIndex]);
+          showGiftDetails(nextIndex);
+          return;
+        }
+
+        showGiftNote(true);
+        if (!motion.matches) {
+          confettiTimer = window.setTimeout(burstConfetti, 295);
+        }
+        await scene?.setOpen(true);
+        if (fromExample) {
+          const bounds = giftNote.getBoundingClientRect();
+          if (bounds.top < 0 || bounds.bottom > window.innerHeight) {
+            giftNote.scrollIntoView({ block: "center", behavior: motion.matches ? "instant" : "smooth" });
+          }
+        }
+      } finally {
+        setGiftBusy(false);
+      }
+    }
+
+    showGiftDetails(0);
+    giftTrigger.addEventListener("click", activateGift);
+    exampleButton.addEventListener("click", activateGift);
+    quizResult.addEventListener("imenno:quiz-celebrate", () => {
+      quizConfetti.replaceChildren();
+      scatterPaper(quizConfetti, quizConfetti);
+    });
+    quizResult.addEventListener("imenno:quiz-clear", () => quizConfetti.replaceChildren());
+    motion.addEventListener("change", () => {
+      if (!motion.matches) return;
+      clearConfetti();
+      quizConfetti.replaceChildren();
+    });
+
+    if ("IntersectionObserver" in window && !motion.matches) {
+      const arrivals = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.remove("is-approaching");
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: "0px 0px -28px 0px" });
+
+      document.querySelectorAll(".situation-arrival, .process-steps").forEach((block) => {
+        block.classList.add("is-approaching");
+        arrivals.observe(block);
+      });
+    }
+
+    whyTrigger.addEventListener("click", () => whyDialog.showModal());
+    whyLaunchButton.addEventListener("click", () => whyDialog.close());
+
+    document.querySelectorAll(".disclosure").forEach(details => {
+      const summary = details.querySelector("summary");
+      const content = details.querySelector(".disclosure-content");
+      if (!content.animate) return;
+      let animation;
+
+      function clearAnimation() {
+        animation?.cancel();
+        animation = null;
+        delete details.dataset.disclosureMotion;
+      }
+
+      summary.addEventListener("click", event => {
+        if (motion.matches) return;
+        event.preventDefault();
+
+        const opening = animation ? details.dataset.disclosureMotion === "closing" : !details.open;
+        const startHeight = details.open ? content.getBoundingClientRect().height : 0;
+        const startOpacity = details.open ? getComputedStyle(content).opacity : 0;
+        clearAnimation();
+        details.open = true;
+        const endHeight = opening ? content.getBoundingClientRect().height : 0;
+        details.dataset.disclosureMotion = opening ? "opening" : "closing";
+
+        const current = content.animate([
+          { height: `${startHeight}px`, opacity: startOpacity },
+          { height: `${endHeight}px`, opacity: opening ? 1 : 0 },
+        ], {
+          duration: opening ? 280 : 230,
+          easing: "cubic-bezier(.22,.7,.23,1)",
+          fill: "both",
+        });
+        animation = current;
+        current.onfinish = () => {
+          if (animation !== current) return;
+          details.open = opening;
+          clearAnimation();
+        };
+      });
+
+      details.addEventListener("toggle", () => { if (!details.open) clearAnimation(); });
+      details.closest("dialog")?.addEventListener("close", clearAnimation);
+      motion.addEventListener("change", () => {
+        if (!motion.matches || !animation) return;
+        details.open = details.dataset.disclosureMotion === "opening";
+        clearAnimation();
+      });
+    });
+  </script>
+  <script>
+    (() => {
+      const form = document.querySelector("#launch-form");
+      const field = document.querySelector("#launch-email");
+      const note = document.querySelector("#launch-note");
+      const status = document.querySelector("#launch-status");
+      const submit = form.querySelector("button");
+      const endpoint = document.querySelector('meta[name="imenno-waitlist"]')?.content;
+      const action = endpoint ? "Сообщить о запуске" : "Сохранить в демо";
+
+      if (endpoint) note.textContent = "Используем адрес для письма о запуске подбора.";
+      field.addEventListener("input", () => {
+        field.removeAttribute("aria-invalid");
+        status.textContent = "";
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (submit.disabled) return;
+        const email = field.value.trim().toLowerCase();
+        submit.disabled = true;
+        field.readOnly = true;
+        submit.textContent = "Сохраняем…";
+        status.textContent = "";
+        try {
+          if (endpoint) {
+            const response = await fetch(endpoint, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email }),
+              signal: AbortSignal.timeout(12000),
+            });
+            if (response.status === 400) {
+              field.setAttribute("aria-invalid", "true");
+              status.textContent = "Проверьте адрес электронной почты.";
+              return;
+            }
+            if (!response.ok || (await response.json()).ok !== true) throw new Error("Waitlist request failed");
+          } else {
+            const key = "imenno-waitlist-demo";
+            const saved = JSON.parse(localStorage.getItem(key) ?? "[]");
+            if (!saved.includes(email)) localStorage.setItem(key, JSON.stringify([...saved, email]));
+          }
+
+          form.reset();
+          status.textContent = endpoint ? "Адрес сохранён для уведомления о запуске." : "Пробная заявка сохранена в этом браузере.";
+        } catch {
+          status.textContent = "Не удалось сохранить адрес. Попробуйте ещё раз.";
+        } finally {
+          field.readOnly = false;
+          submit.disabled = false;
+          submit.textContent = action;
+        }
+      });
+
+      submit.textContent = action;
+      submit.disabled = false;
+    })();
+  </script>
+  <script>
+__TYPOGRAPHY__
+  </script>
+</body>
+</html>
